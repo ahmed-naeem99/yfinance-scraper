@@ -40,7 +40,7 @@ def get_all_stock_data():
                     'Symbol': symbol,
                     'Current Price': 'N/A',
                     'Current Assets (Millions)': 'N/A',
-                    'Market Cap': 'N/A',
+                    'Market Cap (Millions)': 'N/A',
                     'Most Recent Financial Date': 'N/A',
                     'Current Assets Per Share': 'N/A'
                 })
@@ -60,18 +60,24 @@ def get_all_stock_data():
                         found_date = quarter.strftime('%Y-%m-%d')
                         break
             
-            # Calculate the values we want to save
+            # Calculate the values we want to save (all with 2 decimal places)
             if current_assets_value:
                 current_assets_millions = round(current_assets_value / 1000000, 2)
             else:
                 current_assets_millions = 'N/A'
             
-            # Calculate current assets per share if we have all needed data
+            # Convert market cap to millions with 2 decimal places
+            if market_cap and market_cap != 'N/A':
+                market_cap_millions = round(market_cap / 1000000, 2)
+            else:
+                market_cap_millions = 'N/A'
+            
+            # Calculate current assets per share with 2 decimal places
             if (current_assets_value and 
                 current_price != 'N/A' and 
                 market_cap and 
                 market_cap != 0):
-                current_assets_per_share = round((current_assets_value * current_price) / market_cap, 4)
+                current_assets_per_share = round((current_assets_value * current_price) / market_cap, 2)
             else:
                 current_assets_per_share = 'N/A'
             
@@ -80,7 +86,7 @@ def get_all_stock_data():
                 'Symbol': symbol,
                 'Current Price': round(current_price, 2) if current_price != 'N/A' else 'N/A',
                 'Current Assets (Millions)': current_assets_millions,
-                'Market Cap': market_cap,
+                'Market Cap (Millions)': market_cap_millions,
                 'Most Recent Financial Date': found_date if found_date else 'N/A',
                 'Current Assets Per Share': current_assets_per_share
             })
@@ -91,7 +97,7 @@ def get_all_stock_data():
                 'Symbol': symbol,
                 'Current Price': 'N/A',
                 'Current Assets (Millions)': 'N/A',
-                'Market Cap': 'N/A',
+                'Market Cap (Millions)': 'N/A',
                 'Most Recent Financial Date': 'N/A',
                 'Current Assets Per Share': 'N/A'
             })
@@ -105,7 +111,7 @@ def get_all_stock_data():
         'Symbol',
         'Current Price',
         'Current Assets (Millions)',
-        'Market Cap',
+        'Market Cap (Millions)',
         'Most Recent Financial Date',
         'Current Assets Per Share'
     ]
